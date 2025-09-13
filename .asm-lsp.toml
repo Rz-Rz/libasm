@@ -1,0 +1,23 @@
+# .asm-lsp.toml  — project root or ~/.config/asm-lsp/.asm-lsp.toml
+
+[default_config]
+# We write NASM-style Intel syntax, 64-bit
+assembler = "nasm"
+instruction_set = "x86-64"
+
+[default_config.opts]
+# Ask asm-lsp to use NASM itself to produce diagnostics (not gcc/clang)
+compiler = "nasm"
+
+# Inline flags passed to NASM when generating diagnostics
+# (same content you would put in a compile_flags.txt)
+compile_flags_txt = [
+  "-f", "elf64",   # 64-bit ELF objects
+  "-g",            # DWARF debug info
+  "-w+all"         # enable all NASM warnings
+]
+
+# Keep diagnostics enabled, but *do not* fall back to the default gcc/clang recipe
+diagnostics = true
+default_diagnostics = false
+

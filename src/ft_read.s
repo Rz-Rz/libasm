@@ -21,7 +21,7 @@ ft_read:
   ; error: RAX = -errno 
   neg rax ; flip the sign to get positive errno
   push rax ; save errno on stack 
-  call __errno_location ; return a pointer to thread-local errno in rax
+  call __errno_location wrt ..plt ; return a pointer to thread-local errno in rax
   pop rdx ; get errno back from stack to rdx
   mov dword [rax], edx ; store errno value in *errno
   mov rax, -1 ; return -1 to indicate error
@@ -31,3 +31,5 @@ ft_read:
 
 .ok:
   ret
+
+section .note.GNU-stack noalloc
