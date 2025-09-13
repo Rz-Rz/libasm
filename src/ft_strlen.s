@@ -12,5 +12,6 @@ ft_strlen:
     je .done            ; If it's null, we're done
     inc rax             ; Increment the counter
     jmp .loop          ; Repeat the loop
+
 .done:
     ret                 ; Return with the length in rax

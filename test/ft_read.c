@@ -1,4 +1,6 @@
+#include <errno.h> // errno, EBADF, EFAULT
 #include <string.h>
+#include <unistd.h> // pipe, write, close
 
 #include "libasm.h"
 #include "utest.h"

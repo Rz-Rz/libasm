@@ -7,10 +7,18 @@ TEST_NAME		=	tests_bin
 
 LIST_ASM_SRC		=	\
 						ft_read.s				\
+						ft_strlen.s     \
+						ft_strcmp.s     \
+						ft_strcpy.s     \
+						ft_strdup.s     \
 
 LIST_TEST_SRC		=	\
 						ft_read.c				\
 						main.c					\
+						ft_strlen.c     \
+						ft_strcmp.c     \
+						ft_strcpy.c     \
+						ft_strdup.c     \
 
 # ------------ DIRECTORIES ------------ #
 
