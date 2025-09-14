@@ -14,9 +14,10 @@ ft_write:
 
 .syscall_error:
     neg rax 
-    mov rdi, rax       ; move errno to rdi for __errno_location
+    push rax
     call __errno_location wrt ..plt ; get pointer to errno 
-    mov [rax], edi     ; store errno value
-    mov rax, -1        ; return -1 to indicate error
+    pop rdx
+    mov dword [rax], edx ; set errno
+    mov rax, -1 ; return -1 on eror
     ret
 
