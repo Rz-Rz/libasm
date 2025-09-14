@@ -1,1 +1,6 @@
 digest.txt
+.build/
+.cache/
+*.o
+*.idx
+*.d
