@@ -11,6 +11,7 @@ LIST_ASM_SRC		=	\
 						ft_strcmp.s     \
 						ft_strcpy.s     \
 						ft_strdup.s     \
+						ft_write.s      \
 
 LIST_TEST_SRC		=	\
 						ft_read.c				\
@@ -19,6 +20,7 @@ LIST_TEST_SRC		=	\
 						ft_strcmp.c     \
 						ft_strcpy.c     \
 						ft_strdup.c     \
+						ft_write.c      \
 
 # ------------ DIRECTORIES ------------ #
 
@@ -38,6 +40,14 @@ TEST_SRC		=	$(addprefix $(DIR_TEST), $(LIST_TEST_SRC))
 TEST_DEP		=	$(patsubst %.c, $(DIR_BUILD)%.d, $(TEST_SRC))
 TEST_OBJ		=	$(patsubst %.c, $(DIR_BUILD)%.o, $(TEST_SRC))
 UTEST_INCLUDE	=	$(DIR_UTEST)
+
+# ------------ TOOLS / EXTRAS ------------
+CC              ?= cc
+
+# ---- Bear / compile_commands.json ----
+BEAR            ?= bear
+CDB_OUT         ?= compile_commands.json
+
 
 # ------------ COMPILATION ------------ #
 
@@ -105,3 +115,34 @@ check-format:
 .PHONY: format
 format:
 				clang-format -style=file $(TEST_SRC) -i
+
+.PHONY: compdb 
+compdb: clean
+	@# Ensure Bear is installed 
+	@if ! command -v bear &> /dev/null; then \
+		echo "Bear is not installed. Please install it to generate compile_commands.json"; \
+		exit 1; \
+	fi 
+	@$(RM) $(CDB_OUT)
+	@echo "Generating $(CDB_OUT) using Bear.."
+	@$(BEAR") --output $(CDB_OUT) -- $(MAKE) $(TEST_NAME) ||  \
+	 ($(BEAR) --output $(CDB_OUT)  $(MAKE) $(TEST_NAME))
+	@echo "Done -> $(CDB_OUT)"
+
+.PHONY: compdb-quick
+# Quicker (doesn't clean first). Forces rebuild with -B so Bear sees compiles.
+compdb-quick:
+	@if ! command -v $(BEAR) >/dev/null 2>&1; then \
+		echo "Error: '$(BEAR)' not found. Install: https://github.com/rizsotto/Bear"; \
+		exit 1; \
+	fi
+	@$(RM) $(CDB_OUT)
+	@echo "Generating $(CDB_OUT) with Bear (quick)..."
+	@($(BEAR) --output $(CDB_OUT) -- $(MAKE) -B $(TEST_NAME)) || \
+	 ($(BEAR) --output $(CDB_OUT)  $(MAKE) -B $(TEST_NAME))
+	@echo "Done -> $(CDB_OUT)"
+
+.PHONY: cdb-clean
+# Remove compile_commands.json only
+cdb-clean:
+	$(RM) $(CDB_OUT)

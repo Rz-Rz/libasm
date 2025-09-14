@@ -1,7 +1,9 @@
-extern __erno_location
+; Linux, ELF64, System V AMD64 ABI
+; nasm -f elf64
+
 extern ft_strlen
 extern ft_strcpy
-extern malloc
+extern malloc  ; provided by libc (GLIBC)
 
 global ft_strdup
 
@@ -11,10 +13,11 @@ section .text
   ; rdi = s 
 ft_strdup:
   push rdi ; save original pointer
+
   call ft_strlen
   mov rdi, rax 
   inc rdi 
-  call malloc wrt ..plt ; allocate rdx bytes, rax = pointer or NULL
+  call malloc wrt ..plt
   cmp rax, 0
   je .malloc_fail ; if NULL, malloc failed
   mov rdi, rax 
